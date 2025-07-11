@@ -1,6 +1,9 @@
+using System.Linq.Expressions;
 using Domain.ApiResponses;
 using Domain.DTOs.CoursesDTOs;
+using Domain.Entities;
 using Domain.Filters;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace Infrastructure.Interfaces;
 

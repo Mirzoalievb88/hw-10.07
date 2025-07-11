@@ -1,4 +1,7 @@
+using System.Collections.Immutable;
+using System.Linq.Expressions;
 using Domain.ApiResponses;
+using Domain.DTOs.CoursesDTOs;
 using Domain.Entities;
 using Domain.Filters;
 using Domain.Paginations;
@@ -34,6 +37,8 @@ public class CoursesRepository(DataContext context) : ICourseRepository
         return await pagination.GetPagedResponseAsync(filter.PageNumber, filter.PageSize);
     }
 
+    
+
     public async Task<Courses?> GetAsync(int id)
     {
         var Courses = await context.Courses.FindAsync(id);
@@ -56,5 +61,17 @@ public class CoursesRepository(DataContext context) : ICourseRepository
     {
         context.Courses.Remove(Courses);
         return await context.SaveChangesAsync();
+    }
+
+    public async Task<List<Courses>> GetAllAsync(Expression<Func<Courses, bool>>? filter = null)
+    {
+        var query = context.Courses.AsQueryable();
+
+        if (filter != null)
+        {
+            query = query.Where(filter);
+        }
+
+        return await query.ToListAsync();
     }
 }
